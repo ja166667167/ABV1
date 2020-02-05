@@ -14,13 +14,14 @@
 class board{
     public:
         board();
+        board(player*);
         virtual ~board(){}
         U32 piece[16]={0};
         U32 red=0, black=0, occupied=0;
         Move boardMove;
         vector<board*> possibility;
         int eat = 0;
-        player Myplayer;
+        player *MyplayerPtr;
 
         int getPieceType(U32);
         void initBoard();

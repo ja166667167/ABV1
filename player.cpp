@@ -9,7 +9,7 @@
             fprintf(move,"1\nb4\n0\n");
             fclose(move);
         }
-        int player::getFirstColor(){         //紅先0黑先1
+        bool player::getFirstColor(){         //紅先0黑先1
             FILE *board;
             board = fopen("board.txt","r");
             int boardLine = 0;
@@ -37,7 +37,7 @@
                 return 2;
             }
         }
-        int player::getFirst(){       //me first=1, not me first=0 ????????????????????????????????????????????
+        bool player::getFirst(){       //me first=1, not me first=0 ????????????????????????????????????????????
             int boardLine = 0,count=0;
             char tmp='\0';
             FILE *board;
@@ -89,29 +89,25 @@
                 printf("getFirst ERROR");
                 return 2;
         }
-        int player::getMyColor(){               //紅0 黑1
-            int firstColor = getFirstColor();
-            int mefirst = getFirst();
+        void player::setMyColor(){               //紅0 黑1
+            bool firstColor = getFirstColor();
+            bool mefirst = getFirst();
             //printf("first color:%d\n",firstColor);
             //printf("first:%d\n",mefirst);
             //printf("??????\n");
             if(mefirst==1){
                 //printf("one");
-                return firstColor;
+                playerColor=firstColor;
             }
             else if(mefirst==0){
                 //printf("two");
-                return !firstColor;
-            }
-            else{
-                sendFirstMove();
-                return 2;
+                playerColor=(!firstColor);
             }
         }
-        const player &player::operator=(player p){
-            p.playerColor = playerColor;
-            //p.first = first;
-            return *this;
-        }
+        // const player &player::operator=(player p){
+        //     p.playerColor = playerColor;
+        //     //p.first = first;
+        //     return *this;
+        // }
         
         //int first = getFirst();

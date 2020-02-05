@@ -6,11 +6,11 @@ using namespace std;
 class player{
     public:
         player();
-        int getFirstColor();
-        int getFirst();
-        int getMyColor();
-        int playerColor;
+        bool getFirstColor();
+        bool getFirst();
+        void setMyColor();
+        bool playerColor;
         void sendFirstMove();
         //int first;
-        const player &operator=(player);
+        //const player &operator=(player);
 };

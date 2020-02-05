@@ -1,6 +1,9 @@
 #include "board.h"
 using namespace std;
 
+board::board(player *p){
+    MyplayerPtr = p;
+}
 board::board(){}
 
 
@@ -19,6 +22,8 @@ int board::getPieceType(U32 p){ //from U32 to piecetype-i
 }
 void board::initBoard(){
     piece[15] = 0xFFFFFFFF;
+    player Myplayer;
+    MyplayerPtr = &Myplayer;
     // for (int i = 0; i < 16;i++){
     //     printf("%x ",piece[i]);
     // }
@@ -436,7 +441,7 @@ U32 board::generateCMove(U32 u32Src){ //回傳src可以到達的炮位(不分黑
 void board::generateEatMove(){
     U32 dest;
     //printf("GenerateEat:\n");
-    if (Myplayer.playerColor == 0)
+    if (MyplayerPtr->playerColor == 0)
     {
         for (int i = 1; i < 8; i++)
         {
@@ -503,7 +508,7 @@ void board::generateEatMove(){
             }
         }
     }
-    else if (Myplayer.playerColor == 1)
+    else if (MyplayerPtr->playerColor == 1)
     {
         for (int i = 8; i < 15; i++)
         {
@@ -561,7 +566,7 @@ void board::generateSpeardMove(){////////////////////////??????????
 
     U32 src, dest;
     //printf("GenerateSpeard:\n");
-    if(Myplayer.playerColor==0){
+    if(MyplayerPtr->playerColor==0){
         for (int i = 1; i <8; i++){
             U32 p = piece[i];
             while (p)
@@ -587,7 +592,7 @@ void board::generateSpeardMove(){////////////////////////??????????
             }
         }
     }
-    else if(Myplayer.playerColor==1){
+    else if(MyplayerPtr->playerColor==1){
         for (int i = 8; i <15; i++){
             U32 p = piece[i];
             while (p)
@@ -653,7 +658,7 @@ void board::simulateBoard(){ // 產生possibility
         if (simMove[2] == '-')
         {   
             
-            board* simBoard = new board();
+            board* simBoard = new board(MyplayerPtr);
             for (int i = 0; i < 16; i++)
             {
                 simBoard->numUnrevealPiece[i] = numUnrevealPiece[i];
@@ -706,7 +711,7 @@ void board::simulateBoard(){ // 產生possibility
                 if (numUnrevealPiece[a] != 0)//此棋種還有位翻開的棋
                 {
                     //cout << "OK3" << endl;////////////////////////////////
-                    board* simBoard= new board();
+                    board* simBoard= new board(MyplayerPtr);
                     //cout << "ok2" << endl;/////////////////////////////////
                     for (int i = 0; i < 16; i++)
                     {
@@ -756,7 +761,7 @@ int board::pieceCount(int i){
 int board::scoreBoard(){
     int score = 0;
     //cout << "start score=" << score << endl;
-    if (Myplayer.playerColor == 0)
+    if (MyplayerPtr->playerColor == 0)
     {
         for (int i = 1; i < 15; i++)
         {
@@ -808,7 +813,7 @@ int board::scoreBoard(){
             }
         }
     }
-    else if (Myplayer.playerColor == 1)
+    else if (MyplayerPtr->playerColor == 1)
     {
         for (int i = 1; i < 15; i++)
         {

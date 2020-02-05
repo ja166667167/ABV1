@@ -9,7 +9,7 @@ int main()
 
     cout << "OK" << endl;
     treeNode *root = new treeNode();
-    cout << "My color =" << root->nodeBoardPtr->Myplayer.playerColor << endl;
+    cout << "My color =" << root->nodeBoardPtr->MyplayerPtr->playerColor << endl;
     int result = 0;
 
     //root->nodeBoardPtr->printAll();
