@@ -24,9 +24,6 @@ int board::getPieceType(U32 p)
 void board::initBoard()
 {
     piece[15] = 0xFFFFFFFF;
-    player Myplayer;
-    MyplayerPtr = &Myplayer;
-    Myplayer.setMyColor();
     // for (int i = 0; i < 16;i++){
     //     printf("%x ",piece[i]);
     // }

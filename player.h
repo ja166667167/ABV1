@@ -1,3 +1,5 @@
+#ifndef playerh
+#define playerh
 #include <iostream>
 #include <cstdio>
 
@@ -14,3 +16,5 @@ class player{
         //int first;
         //const player &operator=(player);
 };
+
+#endif

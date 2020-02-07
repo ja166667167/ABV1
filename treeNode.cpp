@@ -1,10 +1,11 @@
 #include "treeNode.h"
 
 treeNode::treeNode(board *p){
+    parent = NULL;
     nodeBoardPtr=p;
     nodeBoardPtr->generateAllMove();
     nodeBoardPtr->simulateBoard();
-    parent = NULL;
+    
 }
 treeNode::treeNode(treeNode *t,board *b){    //treeNode t= parent
     nodeBoardPtr = b;
@@ -14,9 +15,10 @@ treeNode::treeNode(treeNode *t,board *b){    //treeNode t= parent
     nodeBoardPtr->simulateBoard();
 
 }
-treeNode::treeNode(){
-    nodeBoardPtr->initBoard();
-    nodeBoardPtr->generateAllMove();
-    nodeBoardPtr->simulateBoard();
-    parent = NULL;
-}
+// treeNode::treeNode(){
+//     parent = NULL;
+//     //nodeBoardPtr->initBoard();
+//     nodeBoardPtr->generateAllMove();
+//     nodeBoardPtr->simulateBoard();
+    
+// }

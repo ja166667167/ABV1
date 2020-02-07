@@ -8,7 +8,11 @@ int main()
 {
 
     cout << "OK" << endl;
-    treeNode *root = new treeNode();
+    player initPlayer;
+    initPlayer.setMyColor();
+    board initBoard = board(&initPlayer);
+    initBoard.initBoard();
+    treeNode *root = new treeNode(&initBoard);
     cout << "My color =" << root->nodeBoardPtr->MyplayerPtr->playerColor << endl;
     int result = 0;
 
