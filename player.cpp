@@ -12,94 +12,58 @@ void player::sendFirstMove()
 }
 bool player::getFirstColor()
 { //紅先0黑先1
-    FILE *board;
-    board = fopen("board.txt", "r");
+    fstream board;
+    board.open("board.txt", ios::in);
     int boardLine = 0;
-    int count = 0;
-    char tmp = '\0';
+    //int count = 0;
+    string line;
+
+    char firstReveal;
     while (boardLine != 14)
     { //過濾到第12行
-        fscanf(board, "%c", &tmp);
-        if (tmp == '*')
-        {
-            boardLine++;
-        }
+        getline(board, line);
+        boardLine++;
     }
-    while (count != 8)
-    {
-        fscanf(board, "%c", &tmp);
-        count++;
-    }
-    //printf("%c\n",tmp);
-    if (tmp >= 65 & tmp <= 90)
+    firstReveal = line.at(8);
+    if (firstReveal >= 65 & firstReveal <= 90) //小寫-紅棋 return 0
     {
         return 0;
     }
-    else if (tmp >= 97 & tmp <= 122)
+    else if (firstReveal >= 97 & firstReveal <= 122) //大寫-黑棋 return 1
     {
         return 1;
     }
+    board.close();
 }
 bool player::getFirst()
 { //me first=1, not me first=0 ????????????????????????????????????????????
-    int boardLine = 0, count = 0;
-    char tmp = '\0';
-    FILE *board;
-    errno = 0;
-    board = fopen("board.txt", "r");
-    if (errno)
-    {
-        printf("Errno= %d\n", errno);
-    }
+    int boardLine = 0;
+    fstream board;
+    string line;
+    string tmp;
+
+    board.open("board.txt", ios::in);
     //printf("GetFirst():");
     while (boardLine != 14)
     { //過濾到第14行????????????????????????????????????????????
-        fscanf(board, "%c", &tmp);
-        //printf("%d",boardLine);
-        if (tmp == '*')
-        {
-            boardLine++;
-        }
+        getline(board, line);
+        boardLine++;
     }
     //printf("\n");
-    while (1)
+    while ((line.at(2) <= 57) & (line.at(2) >= 49))
     {
-        while (tmp != 32)
-        {
-            fscanf(board, "%c", &tmp);
-        }
-        fscanf(board, "%c", &tmp);
-
-        if (tmp <= 57 & tmp >= 49)
-        {
-            while (tmp != 32)
-            {
-                fscanf(board, "%c", &tmp);
-            }
-            count = 1;
-            while (tmp != '\n')
-            {
-                fscanf(board, "%c", &tmp);
-                count++;
-                //printf("%d\n",count);
-            }
-            //printf("\n");
-        }
-        else
-        {
-            break;
-        }
+        tmp = line;
+        getline(board, line);
     }
-
-    fclose(board);
-    if (count == 7)
+    if (tmp.length() < 14)
     {
         return 0;
     }
-    if (count == 13)
+    else
     {
         return 1;
     }
+    board.close();
 }
 void player::setMyColor()
 { //紅0 黑1
@@ -108,21 +72,22 @@ void player::setMyColor()
     //printf("first color:%d\n",firstColor);
     //printf("first:%d\n",mefirst);
     //printf("??????\n");
-    if (mefirst == 1)
-    {
-        //printf("one");
-        playerColor = firstColor;
-    }
-    else if (mefirst == 0)
-    {
-        //printf("two");
-        playerColor = (!firstColor);
-    }
+    // if (mefirst == 1)
+    // {
+    //     //printf("one");
+    //     playerColor = firstColor;
+    // }
+    // else if (mefirst == 0)
+    // {
+    //     //printf("two");
+    //     playerColor = (!firstColor);
+    // }
+    playerColor = !(mefirst ^ firstColor);
+    cout << !(mefirst ^ firstColor) << endl;
+    // const player &player::operator=(player p){
+    //     p.playerColor = playerColor;
+    //     //p.first = first;
+    //     return *this;
+    // }
 }
-// const player &player::operator=(player p){
-//     p.playerColor = playerColor;
-//     //p.first = first;
-//     return *this;
-// }
-
 //int first = getFirst();
