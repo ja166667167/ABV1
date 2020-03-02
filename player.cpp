@@ -83,7 +83,7 @@ void player::setMyColor()
     //     playerColor = (!firstColor);
     // }
     playerColor = !(mefirst ^ firstColor);
-    cout << !(mefirst ^ firstColor) << endl;
+    //cout << !(mefirst ^ firstColor) << endl;
     // const player &player::operator=(player p){
     //     p.playerColor = playerColor;
     //     //p.first = first;

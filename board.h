@@ -21,8 +21,10 @@ public:
     U32 red = 0, black = 0, occupied = 0;
     Move boardMove;
     vector<board *> possibility;
-    int eat = 0;
+    //int eat = 0;
     player *MyplayerPtr = NULL;
+    int numUnrevealPiece[16] = {0, 1, 2, 2, 2, 2, 2, 5, 1, 2, 2, 2, 2, 2, 5, 0};
+    string originMove;
 
     int getPieceType(U32);
     void initBoard();
@@ -37,7 +39,6 @@ public:
     int scoreBoard();
     const board &operator=(board);
     void printAll();
-    int numUnrevealPiece[16] = {0, 1, 2, 2, 2, 2, 2, 5, 1, 2, 2, 2, 2, 2, 5, 0};
 
 private:
     U32 const column[4] = {0x11111111, 0x22222222, 0x44444444, 0x88888888};

@@ -506,7 +506,7 @@ void board::generateEatMove()
                     boardMove.allMove.push_back(result);
                     //cout <<result << endl;
                     //cout<<allMoves.at(0)<< endl;
-                    eat = 1;
+                    //eat = 1;
                 }
             }
         }
@@ -557,7 +557,7 @@ void board::generateEatMove()
                     boardMove.eatMove.push_back(result);
                     boardMove.allMove.push_back(result);
                     //cout << result << endl;
-                    eat = 1;
+                    //eat = 1;
                 }
             }
         }
@@ -670,6 +670,7 @@ void board::simulateBoard()
         {
 
             board *simBoard = new board(MyplayerPtr);
+            simBoard->originMove = simMove;
             for (int i = 0; i < 16; i++)
             {
                 simBoard->numUnrevealPiece[i] = numUnrevealPiece[i];
@@ -724,6 +725,7 @@ void board::simulateBoard()
                 {
                     //cout << "OK3" << endl;////////////////////////////////
                     board *simBoard = new board(MyplayerPtr);
+                    simBoard->originMove = simMove;
                     //cout << "ok2" << endl;/////////////////////////////////
                     for (int i = 0; i < 16; i++)
                     {
@@ -896,7 +898,7 @@ const board &board::operator=(board b)
     {
         numUnrevealPiece[i] = b.numUnrevealPiece[i];
     }
-    eat = b.eat;
+    //eat = b.eat;
     return *this;
 }
 void board::printAll()

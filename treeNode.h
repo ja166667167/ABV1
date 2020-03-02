@@ -1,25 +1,26 @@
 #ifndef treeNodeh
 #define treeNodeh
 
-#include <iostream>
+#include "board.h"
 #include <cstdio>
+#include <iostream>
 #include <string>
 #include <vector>
-#include"board.h"
 
 using namespace std;
 
-class treeNode{
-    public:
-        treeNode(board*);
-        treeNode(treeNode*,board*);
-        //treeNode();
-        virtual ~treeNode(){}
-        //board nodeBoard;
-        board *nodeBoardPtr;
-        treeNode *parent;
-        vector<treeNode *> children;
-        int selectedBranch=0;
+class treeNode
+{
+public:
+    treeNode(board *);
+    treeNode(treeNode *, board *);
+    //treeNode();
+    virtual ~treeNode() {}
+    //board nodeBoard;
+    board *nodeBoardPtr;
+    treeNode *parent;
+    vector<treeNode *> children;
+    int selectedBranch = 0;
 };
 
 #endif
