@@ -7,6 +7,8 @@
 #include <vector>
 #include <time.h>
 #include"treeNode.h"
+#include"board.h"
+#include"player.h"
 
 
 using namespace std;
