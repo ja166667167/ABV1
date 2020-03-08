@@ -1,10 +1,14 @@
 #include "board.h"
 using namespace std;
 
-board::board(){}
+board::board(player *p)
+{
+    MyplayerPtr = p;
+}
+board::board() {}
 
-
-int board::getPieceType(U32 p){ //from U32 to piecetype-i
+int board::getPieceType(U32 p)
+{ //from U32 to piecetype-i
     int i;
     for (i = 0; i < 16; i++)
     {
@@ -17,7 +21,8 @@ int board::getPieceType(U32 p){ //from U32 to piecetype-i
     printf("getIndex ERROR");
     return 111;
 }
-void board::initBoard(){
+void board::initBoard()
+{
     piece[15] = 0xFFFFFFFF;
     // for (int i = 0; i < 16;i++){
     //     printf("%x ",piece[i]);
@@ -256,7 +261,8 @@ void board::initBoard(){
     refreshOccupied();
     refreshRed();
 }
-void board::printBoard(){
+void board::printBoard()
+{
     int a, b, p, c;
     U32 s;
     for (a = 7; a >= 0; a--)
@@ -332,7 +338,8 @@ void board::printBoard(){
         printf("\n");
     }
 }
-U32 board::generateCMove(U32 u32Src){ //回傳src可以到達的炮位(不分黑紅)
+U32 board::generateCMove(U32 u32Src)
+{ //回傳src可以到達的炮位(不分黑紅)
     int intSrc = U32ToInt(u32Src);
     int r = intSrc / 4, c = intSrc % 4;
     U32 dest = 0, dest1 = 0;
@@ -433,10 +440,11 @@ U32 board::generateCMove(U32 u32Src){ //回傳src可以到達的炮位(不分黑
     //printf("dest1:%x\n",dest1);
     return (dest | dest1);
 }
-void board::generateEatMove(){
+void board::generateEatMove()
+{
     U32 dest;
     //printf("GenerateEat:\n");
-    if (Myplayer.playerColor == 0)
+    if (MyplayerPtr->playerColor == 0)
     {
         for (int i = 1; i < 8; i++)
         {
@@ -498,12 +506,12 @@ void board::generateEatMove(){
                     boardMove.allMove.push_back(result);
                     //cout <<result << endl;
                     //cout<<allMoves.at(0)<< endl;
-                    eat = 1;
+                    //eat = 1;
                 }
             }
         }
     }
-    else if (Myplayer.playerColor == 1)
+    else if (MyplayerPtr->playerColor == 1)
     {
         for (int i = 8; i < 15; i++)
         {
@@ -549,7 +557,7 @@ void board::generateEatMove(){
                     boardMove.eatMove.push_back(result);
                     boardMove.allMove.push_back(result);
                     //cout << result << endl;
-                    eat = 1;
+                    //eat = 1;
                 }
             }
         }
@@ -557,12 +565,15 @@ void board::generateEatMove(){
 
     // printf("---------\n");
 }
-void board::generateSpeardMove(){////////////////////////??????????
+void board::generateSpeardMove()
+{ ////////////////////////??????????
 
     U32 src, dest;
     //printf("GenerateSpeard:\n");
-    if(Myplayer.playerColor==0){
-        for (int i = 1; i <8; i++){
+    if (MyplayerPtr->playerColor == 0)
+    {
+        for (int i = 1; i < 8; i++)
+        {
             U32 p = piece[i];
             while (p)
             {
@@ -587,8 +598,10 @@ void board::generateSpeardMove(){////////////////////////??????????
             }
         }
     }
-    else if(Myplayer.playerColor==1){
-        for (int i = 8; i <15; i++){
+    else if (MyplayerPtr->playerColor == 1)
+    {
+        for (int i = 8; i < 15; i++)
+        {
             U32 p = piece[i];
             while (p)
             {
@@ -614,7 +627,8 @@ void board::generateSpeardMove(){////////////////////////??????????
         }
     }
 }
-void board::generateRevealMove(){
+void board::generateRevealMove()
+{
     U32 reveal = piece[15];
     U32 mask;
     //printf("GenerateReveal:\n");
@@ -631,12 +645,14 @@ void board::generateRevealMove(){
         //cout << result << endl;
     }
 }
-void board::generateAllMove(){
+void board::generateAllMove()
+{
     generateEatMove();
     generateSpeardMove();
     generateRevealMove();
 }
-void board::simulateBoard(){ // 產生possibility
+void board::simulateBoard()
+{ // 產生possibility
     //initBoard();
     // for (int i = 0; i < 16; i++){
     //     printf("%x ",piece[i]);
@@ -651,9 +667,10 @@ void board::simulateBoard(){ // 產生possibility
         simMove = boardMove.allMove[k];
         //cout << simMove << endl;///////////////////////////
         if (simMove[2] == '-')
-        {   
-            
-            board* simBoard = new board();
+        {
+
+            board *simBoard = new board(MyplayerPtr);
+            simBoard->originMove = simMove;
             for (int i = 0; i < 16; i++)
             {
                 simBoard->numUnrevealPiece[i] = numUnrevealPiece[i];
@@ -693,20 +710,22 @@ void board::simulateBoard(){ // 產生possibility
             //cout << "score= " << simBoard.thisScore.boardScore << endl;
             possibility.push_back(simBoard);
         }
-        else if(simMove[0]=='R')
+        else if (simMove[0] == 'R')
         {
             //cout << "move: "<<simMove<< endl;//////////////////////////
             int revP = simMove[2] - 96 + (simMove[3] - 49) * 4;
             U32 rev = IntToU32(revP);
             //printf("rev=%x\n",rev);////////////////////////////////
-            for (int a = 1; a < 15; a++){
+            for (int a = 1; a < 15; a++)
+            {
 
                 //cout << " a=" << a << endl;////////////////////////
                 //cout << "ok1" << endl;///////////////////////////
-                if (numUnrevealPiece[a] != 0)//此棋種還有位翻開的棋
+                if (numUnrevealPiece[a] != 0) //此棋種還有位翻開的棋
                 {
                     //cout << "OK3" << endl;////////////////////////////////
-                    board* simBoard= new board();
+                    board *simBoard = new board(MyplayerPtr);
+                    simBoard->originMove = simMove;
                     //cout << "ok2" << endl;/////////////////////////////////
                     for (int i = 0; i < 16; i++)
                     {
@@ -729,21 +748,21 @@ void board::simulateBoard(){ // 產生possibility
                     possibility.push_back(simBoard);
                     //cout << "push back OK "<< endl;
                 }
-            
             }
         }
-        
-        else{
+
+        else
+        {
             cout << "simulate ERROR!!!!!!!!!!!!!!!" << endl;
         }
         // for (int i = 0; i < 16;i++){//////////////////////////////////////
         //     printf("%x ",simBoard.piece[i]);
         // }
         // cout << endl;
-        
     }
 }
-int board::pieceCount(int i){
+int board::pieceCount(int i)
+{
     int count = 0;
     U32 p = piece[i];
     while (p)
@@ -753,10 +772,11 @@ int board::pieceCount(int i){
     }
     return count;
 }
-int board::scoreBoard(){
+int board::scoreBoard()
+{
     int score = 0;
     //cout << "start score=" << score << endl;
-    if (Myplayer.playerColor == 0)
+    if (MyplayerPtr->playerColor == 0)
     {
         for (int i = 1; i < 15; i++)
         {
@@ -804,11 +824,10 @@ int board::scoreBoard(){
             case 14:
                 score -= (1 * pieceCount(i));
                 break;
-
             }
         }
     }
-    else if (Myplayer.playerColor == 1)
+    else if (MyplayerPtr->playerColor == 1)
     {
         for (int i = 1; i < 15; i++)
         {
@@ -861,8 +880,10 @@ int board::scoreBoard(){
     }
     return score;
 }
-const board &board::operator=(board b){
-    for (int i = 0; i < 16;i++){
+const board &board::operator=(board b)
+{
+    for (int i = 0; i < 16; i++)
+    {
         piece[i] = b.piece[i];
         numUnrevealPiece[i] = b.numUnrevealPiece[i];
     }
@@ -873,24 +894,28 @@ const board &board::operator=(board b){
     // for (int i = 0; i < possibility.size();i++){
     //     possibility[i] = b.possibility[i];
     // }
-    for (int i = 0; i < 16;i++){
+    for (int i = 0; i < 16; i++)
+    {
         numUnrevealPiece[i] = b.numUnrevealPiece[i];
     }
-        eat = b.eat;
+    //eat = b.eat;
     return *this;
 }
-void board::printAll(){
+void board::printAll()
+{
     cout << "-------------------------------------" << endl;
     cout << "piece=";
-    for (int i = 0; i < 16;i++){
-        printf("%x ",piece[i]);
+    for (int i = 0; i < 16; i++)
+    {
+        printf("%x ", piece[i]);
     }
     printf("\n");
-    printf("red=%x black=%x occupied=%x\n",red,black,occupied);
+    printf("red=%x black=%x occupied=%x\n", red, black, occupied);
     cout << "Move count: " << boardMove.allMove.size() << endl;
     cout << "All Moves: ";
-    for (int i = 0; i < boardMove.allMove.size();i++){
-        cout << boardMove.allMove[i]<<" ";
+    for (int i = 0; i < boardMove.allMove.size(); i++)
+    {
+        cout << boardMove.allMove[i] << " ";
     }
     cout << endl;
     // cout << "Possibility: ";
@@ -899,32 +924,36 @@ void board::printAll(){
     //     cout << "i=" << i << endl;
 
     //     possibility[i].printBoard();
-        
+
     // }
     cout << "Unreveal Piece=";
-    for (int i = 0; i < 16;i++){
+    for (int i = 0; i < 16; i++)
+    {
         cout << numUnrevealPiece[i];
     }
-        cout << endl;
+    cout << endl;
     printBoard();
     cout << "-------------------------------------" << endl;
 }
 
-void board::refreshRed(){
+void board::refreshRed()
+{
     int j;
     for (j = 1; j < 8; j++)
     {
         red = red | piece[j];
     }
 }
-void board::refreshBlack(){
+void board::refreshBlack()
+{
     int j;
     for (j = 8; j < 15; j++)
     {
         black = black | piece[j];
     }
 }
-void board::refreshOccupied(){
+void board::refreshOccupied()
+{
     int j;
     //printf("deafult oc:%x\n",occupied);
     for (j = 1; j < 16; j++)
@@ -935,10 +964,12 @@ void board::refreshOccupied(){
     }
     //exit(1);
 }
-U32 board::LS1B(U32 x){
+U32 board::LS1B(U32 x)
+{
     return x & (-x);
 }
-U32 board::MS1B(U32 x){
+U32 board::MS1B(U32 x)
+{
     x |= (x >> 1);
     x |= (x >> 2);
     x |= (x >> 4);
