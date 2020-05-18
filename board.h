@@ -26,6 +26,7 @@ public:
     int numUnrevealPiece[16] = {0, 1, 2, 2, 2, 2, 2, 5, 1, 2, 2, 2, 2, 2, 5, 0};
     string originMove;
 
+    int getUnrevealNum();
     int getPieceType(U32);
     void initBoard();
     void printBoard();
