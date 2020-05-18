@@ -7,6 +7,9 @@ board::board(player *p)
 }
 board::board() {}
 
+int board::getUnrevealNum(){
+    return pieceCount(15);
+}
 int board::getPieceType(U32 p)
 { //from U32 to piecetype-i
     int i;
